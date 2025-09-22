@@ -1,48 +1,34 @@
 # 📝 Note App
 
-A simple **Flutter** application for managing notes.  
-It allows adding, editing, viewing, and deleting notes with an easy-to-use interface.
+A Flutter-based simple note-taking application.
 
 ---
 
 ## 📸 Screenshots
 
 ### Add Note
-![Add Note](assets/addnote.jpg)
+<img src="assets/addnote.jpg" alt="Add Note Screenshot" width="300"/>
 
 ### Edit Note
-![Edit Note](assets/editnote.jpg)
+<img src="assets/editnote.jpg" alt="Edit Note Screenshot" width="300"/>
 
 ### Note Details
-![Note Details](assets/notedetails.jpg)
+<img src="assets/notedetails.jpg" alt="Note Details Screenshot" width="300"/>
 
 ### Notes List
-![Notes List](assets/notelist.jpg)
+<img src="assets/notelist.jpg" alt="Notes List Screenshot" width="300"/>
 
 ---
 
 ## 🎥 Demo Video
-Watch the demo video here:  
-[▶️ Click to watch](https://youtube.com/shorts/Pc1cpzO4cTQ)
+[![Watch the video](https://img.youtube.com/vi/Pc1cpzO4cTQ/0.jpg)](https://youtube.com/shorts/Pc1cpzO4cTQ)
 
 ---
 
-## 🚀 Features
-- Add and edit notes  
-- View note details  
-- Simple and clean UI  
-- Local storage  
+## ⚙️ Features
+- Add and edit notes.  
+- View note details.  
+- Simple and clean user interface.  
+- Local storage support.  
 
 ---
-
-## 🛠️ Requirements
-- Flutter SDK  
-- Dart  
-- Android Studio or VS Code  
-
----
-
-## ▶️ How to Run
-```bash
-flutter pub get
-flutter run
