@@ -1,13 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   Future<void> signInWithGoogle() async {
     try {
       emit(AuthLoading());
@@ -26,8 +26,8 @@ class AuthCubit extends Cubit<AuthState> {
         credential,
       );
       emit(AuthSuccess(userCredential.user!));
-    } catch (e) {
-      emit(AuthFailure(e.toString()));
+    } catch (_) {
+      emit(AuthFailure("Check your internet connection"));
     }
   }
 
@@ -36,8 +36,8 @@ class AuthCubit extends Cubit<AuthState> {
       await _googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
       emit(AuthInitial());
-    } catch (e) {
-      emit(AuthFailure("Error signing out: $e"));
+    } catch (_) {
+      emit(AuthFailure("Check your internet connection"));
     }
   }
 
@@ -49,8 +49,8 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       emit(AuthSuccess(userCredential.user!));
-    } catch (e) {
-      emit(AuthFailure(e.toString()));
+    } catch (_) {
+      emit(AuthFailure("Check your internet connection"));
     }
   }
 
@@ -62,8 +62,8 @@ class AuthCubit extends Cubit<AuthState> {
         password: password,
       );
       emit(AuthSuccess(userCredential.user!));
-    } catch (e) {
-      emit(AuthFailure(e.toString()));
+    } catch (_) {
+      emit(AuthFailure("Check your internet connection"));
     }
   }
 }

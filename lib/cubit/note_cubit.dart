@@ -8,6 +8,7 @@ class NoteCubit extends Cubit<NoteState> {
   final FirestoreService firestoreService;
   NoteCubit(this.firestoreService) : super(NoteInitial());
   String? get uid => FirebaseAuth.instance.currentUser?.uid;
+
   Future<void> addNote({
     required String title,
     required String description,
@@ -23,8 +24,8 @@ class NoteCubit extends Cubit<NoteState> {
         description: description.trim(),
       );
       emit(NoteSuccess());
-    } catch (e) {
-      emit(NoteFailure(e.toString()));
+    } catch (_) {
+      emit(NoteFailure("Check your internet connection"));
     }
   }
 
@@ -37,8 +38,8 @@ class NoteCubit extends Cubit<NoteState> {
     try {
       await firestoreService.deleteNote(title.trim());
       emit(NoteSuccess());
-    } catch (e) {
-      emit(NoteFailure(e.toString()));
+    } catch (_) {
+      emit(NoteFailure("Check your internet connection"));
     }
   }
 
@@ -101,8 +102,8 @@ class NoteCubit extends Cubit<NoteState> {
         newDescription: trimmedNewDesc,
       );
       emit(NoteSuccess());
-    } catch (e) {
-      emit(NoteFailure(e.toString()));
+    } catch (_) {
+      emit(NoteFailure("Check your internet connection"));
     }
   }
 }
