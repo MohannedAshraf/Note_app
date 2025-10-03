@@ -7,7 +7,7 @@ A Flutter-based simple note-taking application.
 ## 📸 Screenshots
 
 ### Login
-<img src="assets/1ogin.jpg" alt="Login Screenshot" width="300"/>
+<img src="assets/login.jpg" alt="Login Screenshot" width="300"/>
 
 ### Register
 <img src="assets/register.jpg" alt="Register Screenshot" width="300"/>
