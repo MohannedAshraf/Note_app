@@ -8,6 +8,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<void> signInWithGoogle() async {
     try {
@@ -50,6 +51,34 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthInitial());
     } catch (e) {
       emit(AuthFailure("Error signing out: $e"));
+    }
+  }
+
+  // Email & Password Sign In
+  Future<void> signInWithEmail(String email, String password) async {
+    try {
+      emit(AuthLoading());
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      emit(AuthSuccess(userCredential.user!));
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
+    }
+  }
+
+  // Register with Email & Password
+  Future<void> registerWithEmail(String email, String password) async {
+    try {
+      emit(AuthLoading());
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      emit(AuthSuccess(userCredential.user!));
+    } catch (e) {
+      emit(AuthFailure(e.toString()));
     }
   }
 }

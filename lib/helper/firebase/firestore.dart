@@ -4,7 +4,8 @@ import 'package:note_app/repo/model/app_user_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final String? uid = FirebaseAuth.instance.currentUser?.uid;
+
+  String? get uid => FirebaseAuth.instance.currentUser?.uid;
 
   Future<void> addNote({
     required String title,
@@ -90,6 +91,7 @@ class FirestoreService {
     }
   }
 
+  // User data
   Future<void> saveUser(AppUser user) async {
     await _firestore.collection("users").doc(user.uid).set(user.toMap());
   }

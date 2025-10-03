@@ -5,10 +5,10 @@ import 'package:note_app/cubit/auth_state.dart';
 import 'package:note_app/helper/app_color.dart';
 import 'package:note_app/helper/widgets/custom_button.dart';
 import 'package:note_app/view/add_note_screen.dart';
-import 'register_screen.dart';
+import 'package:note_app/view/login_screen.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            "Login",
+            "Register",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
@@ -102,41 +102,32 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   CustomButton(
                     color: AppColor.button,
-                    text: "Login",
+                    text: "Register",
                     onPressed: () {
-                      context.read<AuthCubit>().signInWithEmail(
+                      context.read<AuthCubit>().registerWithEmail(
                         emailController.text.trim(),
                         passwordController.text.trim(),
                       );
                     },
                   ),
-
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have an account?"),
+                      Text("Have an account?"),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => RegisterScreen()),
+                            MaterialPageRoute(builder: (_) => LoginScreen()),
                           );
                         },
                         child: Text(
-                          "Register",
+                          "Login",
                           style: TextStyle(color: AppColor.button),
                         ),
                       ),
                     ],
-                  ),
-                  const SizedBox(height: 20),
-                  CustomButton(
-                    color: AppColor.button,
-                    text: "Sign in with Google",
-                    onPressed: () {
-                      context.read<AuthCubit>().signInWithGoogle();
-                    },
                   ),
                 ],
               );
