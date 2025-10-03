@@ -6,6 +6,15 @@ A Flutter-based simple note-taking application.
 
 ## 📸 Screenshots
 
+### Login
+<img src="assets/1ogin.jpg" alt="Login Screenshot" width="300"/>
+
+### Register
+<img src="assets/register.jpg" alt="Register Screenshot" width="300"/>
+
+### Google Sign In
+<img src="assets/google.jpg" alt="Google SignIn Screenshot" width="300"/>
+
 ### Add Note
 <img src="assets/addnote.jpg" alt="Add Note Screenshot" width="300"/>
 
@@ -26,6 +35,7 @@ A Flutter-based simple note-taking application.
 ---
 
 ## ⚙️ Features
+- Login with Google
 - Add and edit notes.  
 - View note details.  
 - Simple and clean user interface.  
