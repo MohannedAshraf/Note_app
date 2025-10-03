@@ -39,6 +39,9 @@ dependencies:
   equatable: ^2.0.5
   bloc: ^8.1.4
   cloud_firestore: 
+  firebase_auth: 
+  google_sign_in: ^7.2.0 
+
 
 
 dev_dependencies:
