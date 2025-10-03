@@ -2,20 +2,17 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_app/cubit/note_cubit.dart';
 import 'package:note_app/helper/app_color.dart';
 import 'edit_screen.dart';
-import 'package:note_app/helper/firebase/firestore.dart';
 
 class NoteDetailsScreen extends StatelessWidget {
   const NoteDetailsScreen({super.key, required this.title});
-
   final String title;
-
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final firestore = FirestoreService();
-
+    final cubit = context.read<NoteCubit>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -34,24 +31,24 @@ class NoteDetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              final snapshot = await firestore.getNotes().firstWhere(
-                (snap) => true,
-              );
-              final noteDoc = snapshot.docs.firstWhere(
-                (doc) => doc.id == title,
-              );
-              final currentDescription = noteDoc["description"] ?? "";
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (_) => EditScreen(
-                        oldTitle: title,
-                        description: currentDescription,
-                      ),
-                ),
-              );
+              try {
+                final data = await cubit.getNoteDataOnce(title);
+                final currentDescription = data?['description'] ?? '';
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => EditScreen(
+                          oldTitle: title,
+                          description: currentDescription,
+                        ),
+                  ),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Error fetching note: $e")),
+                );
+              }
             },
             icon: const Padding(
               padding: EdgeInsets.only(right: 8.0),
@@ -60,40 +57,33 @@ class NoteDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream:
-            FirebaseFirestore.instance
-                .collection("Notes")
-                .doc(title)
-                .snapshots(),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: cubit.getNoteStream(title),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return const Center(child: Text("Note not found"));
           }
-
-          final noteData = snapshot.data!;
-          final description = noteData["description"] ?? "";
-          final Timestamp? timestamp = noteData["createdAt"];
+          final noteDoc = snapshot.data!;
+          final description = noteDoc.data()?["description"] ?? "";
+          final Timestamp? timestamp = noteDoc.data()?["createdAt"];
           final DateTime? createdAt = timestamp?.toDate();
-
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  noteData.id,
+                  noteDoc.id,
                   style: TextStyle(
                     color: AppColor.mainColor,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: size.height * 0.015),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
                 Text(
                   description,
                   style: TextStyle(
@@ -104,7 +94,7 @@ class NoteDetailsScreen extends StatelessWidget {
                   maxLines: null,
                   softWrap: true,
                 ),
-                SizedBox(height: size.height * 0.02),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                 if (createdAt != null)
                   Text(
                     "Created At: ${createdAt.toLocal().toString().split('.').first}",

@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_app/cubit/note_cubit.dart';
 import 'package:note_app/cubit/note_state.dart';
 import 'package:note_app/helper/app_color.dart';
-import 'package:note_app/helper/widgets/custom_button.dart';
 import 'note_details_screen.dart';
+import 'package:note_app/helper/widgets/custom_button.dart';
 
 class EditScreen extends StatelessWidget {
   const EditScreen({
@@ -14,10 +14,8 @@ class EditScreen extends StatelessWidget {
     required this.oldTitle,
     required this.description,
   });
-
   final String oldTitle;
   final String description;
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -27,27 +25,29 @@ class EditScreen extends StatelessWidget {
     final TextEditingController descriptionController = TextEditingController(
       text: description,
     );
-
+    final cubit = context.read<NoteCubit>();
     return BlocConsumer<NoteCubit, NoteState>(
       listener: (context, state) {
         if (state is NoteSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Note updated successfully")),
           );
-
           final updatedTitle = titleController.text.trim();
-          final updatedDescription = descriptionController.text.trim();
-
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (_) => NoteDetailsScreen(title: updatedTitle),
             ),
+            (Route<dynamic> route) => false,
           );
         } else if (state is NoteFailure) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(state.error)));
+        } else if (state is NoteEmptyFields) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         }
       },
       builder: (context, state) {
@@ -136,7 +136,7 @@ class EditScreen extends StatelessWidget {
                             final updatedDescription =
                                 descriptionController.text.trim();
 
-                            context.read<NoteCubit>().updateNote(
+                            cubit.updateNote(
                               oldTitle: oldTitle,
                               newTitle:
                                   updatedTitle != oldTitle

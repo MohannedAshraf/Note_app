@@ -19,3 +19,11 @@ class NoteFailure extends NoteState {
   @override
   List<Object?> get props => [error];
 }
+
+class NoteEmptyFields extends NoteState {
+  final String message;
+  NoteEmptyFields([this.message = "Please fill all fields"]);
+
+  @override
+  List<Object?> get props => [message];
+}

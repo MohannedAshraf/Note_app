@@ -4,15 +4,12 @@ import 'package:note_app/repo/model/app_user_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   String? get uid => FirebaseAuth.instance.currentUser?.uid;
-
   Future<void> addNote({
     required String title,
     required String description,
   }) async {
     if (uid == null) throw Exception("User not logged in");
-
     try {
       await _firestore
           .collection("users")
@@ -30,7 +27,6 @@ class FirestoreService {
 
   Future<void> deleteNote(String title) async {
     if (uid == null) throw Exception("User not logged in");
-
     try {
       await _firestore
           .collection("users")
@@ -45,7 +41,6 @@ class FirestoreService {
 
   Stream<QuerySnapshot> getNotes() {
     if (uid == null) throw Exception("User not logged in");
-
     return _firestore
         .collection("users")
         .doc(uid)
@@ -60,14 +55,12 @@ class FirestoreService {
     String? newDescription,
   }) async {
     if (uid == null) throw Exception("User not logged in");
-
     try {
       final oldDocRef = _firestore
           .collection("users")
           .doc(uid)
           .collection("Notes")
           .doc(oldTitle);
-
       if (newTitle != null && newTitle != oldTitle) {
         final snapshot = await oldDocRef.get();
         final data = snapshot.data()!;
@@ -91,7 +84,6 @@ class FirestoreService {
     }
   }
 
-  // User data
   Future<void> saveUser(AppUser user) async {
     await _firestore.collection("users").doc(user.uid).set(user.toMap());
   }
