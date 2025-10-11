@@ -1,10 +1,26 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:note_app/helper/services/remote_config_service.dart';
 import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+
+  Future<void> init() async {
+    try {
+      final bool isForceUpdate =
+          await RemoteConfigService.instance.isForceUpdateEnabled;
+      if (isForceUpdate) {
+        emit(ForceUpdateState());
+      } else {
+        emit(AuthInitial());
+      }
+    } catch (_) {
+      emit(AuthFailure("Check your internet connection"));
+    }
+  }
+
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
