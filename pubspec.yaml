@@ -46,7 +46,6 @@ dependencies:
   device_info_plus: ^12.1.0
   package_info_plus: ^9.0.0
   firebase_messaging: 
-  flutter_local_notifications: 
 
 
 
